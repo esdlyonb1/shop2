@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Profile;
+use App\Form\ImageType;
 use App\Form\ProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +17,9 @@ class ProfileController extends AbstractController
     #[Route('/myprofile', name: 'app_myprofile')]
     public function index(): Response
     {
-        return $this->render('profile/index.html.twig');
+        $image = new Image();
+        $formImage = $this->createForm(ImageType::class, $image);
+        return $this->renderForm('profile/index.html.twig',['formImage'=>$formImage]);
     }
 
 

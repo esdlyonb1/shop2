@@ -57,7 +57,30 @@
             </div>
         </div>
     </nav>
+<div class="container">
 
+
+
+
+    {% if app.user %}
+
+        {% if "ROLE_ADMIN" in app.user.roles %}
+
+
+        <p>je suis admin</p>
+
+        {% else %}
+
+            <p>je suis user</p>
+        {% endif %}
+
+    {% else %}
+        <p>je suis visiteur</p>
+
+    {% endif %}
+
+
+</div>
     <div class="container">
         {% block body %}{% endblock %}
 

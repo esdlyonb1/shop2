@@ -28,22 +28,43 @@ class ImageController extends AbstractController
     }
 
     #[Route('addtoproduct/{id}', name: 'app_image_product_add')]
-    public function addToProduct(Product $product, Request $request, EntityManagerInterface $manager): Response
+    #[Route('addtoprofile', name: 'app_image_profile_add')]
+    public function addImage(Product $product = null, Request $request, EntityManagerInterface $manager): Response
     {
+
+        $routeName = $request->attributes->get("_route");
 
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $image->setProduct($product);
+
+
+            if($product && $routeName == "app_image_product_add"){
+                $image->setProduct($product);
+            }elseif($routeName == "app_image_profile_add"){
+
+                $oldImage = $this->getUser()->getProfile()->getImage();
+                if($oldImage){
+                    $manager->remove($oldImage);
+
+                }
+
+                $image->setProfile($this->getUser()->getProfile());
+            }
+
             $manager->persist($image);
             $manager->flush();
 
 
         }
 
-        return $this->redirectToRoute('app_image_index', ['id' => $product->getId()], Response::HTTP_SEE_OTHER);
+        if($routeName == "app_image_profile_add"){
+            return $this->redirectToRoute('app_myprofile');
+        }
+
+        return $this->redirectToRoute('app_image_index', ['id' => $product->getId()]);
 
 
     }

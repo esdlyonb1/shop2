@@ -4,6 +4,20 @@
 
 {% block body %}
 
+    <div class="pic">
+        {% if app.user.profile.image is not null %}
+
+            <img src="{{ vich_uploader_asset(app.user.profile.image, 'imageFile')|imagine_filter('petite_vignette') }}" alt="">
+
+        {% else %}
+                <p>no profile pic yet</p>
+        {% endif %}
+        {{ form_start(formImage, {'action': path('app_image_profile_add'), 'method': 'POST'}) }}
+        {{ form_widget(formImage.imageFile)}}
+        <button type="submit" class="btn btn-success">OK</button>
+        {{ form_end(formImage) }}
+    </div>
+
     <div class="row">
         {% if app.user.profile.firstName is not null %}
         <p><strong>{{ app.user.profile.firstName }}</strong></p>
