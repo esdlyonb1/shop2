@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        {% if app.user.profile.firstName is not null %}
+        <p><strong>{{ app.user.profile.firstName }}</strong></p>
+        {% else %}
+            <p>no firstname yet</p>
+        {% endif %}
+
+        {% if app.user.profile.lastName is not null %}
+            <p><strong>{{ app.user.profile.lastName }}</strong></p>
+        {% else %}
+            <p>no lastname yet</p>
+        {% endif %}
+
+    </div>
+    <a href="{{ path('app_editprofile') }}" class="btn btn-primary">Edit this</a>
+
+{% endblock %}
