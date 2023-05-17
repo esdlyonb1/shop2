@@ -122,6 +122,7 @@ class CartService
       return $count;
     }
 
+        public function getTruc(){return "coucou";}
 
 
 }
