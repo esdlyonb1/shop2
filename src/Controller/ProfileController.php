@@ -19,7 +19,7 @@ class ProfileController extends AbstractController
     {
         $image = new Image();
         $formImage = $this->createForm(ImageType::class, $image);
-        return $this->renderForm('profile/index.html.twig',['formImage'=>$formImage]);
+        return $this->renderForm('profile/address_selection.html.twig',['formImage'=>$formImage]);
     }
 
 

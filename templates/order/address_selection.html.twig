@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderController!{% endblock %}
+
+{% block body %}
+
+    
+    {% for address in app.user.profile.addresses %}
+    
+        <div class="border border-dark d-flex justify-content-start flex-column">
+            {% if app.user.profile.firstName is not null and app.user.profile.lastName is not null %}
+             <p>{{ app.user.profile.firstName }} {{ app.user.profile.lastName }}</p>
+            {% else %}
+                <p>you have to fill up first name & last name @ your profile</p>
+            {% endif %}
+            <p>{{ address.streetNumber }} {{ address.street }}</p>
+            <p>{{ address.zipcode }} {{ address.city }}</p>
+            <p>{{ address.country }}</p>
+
+            <a href="{{ path('app_payment',{id:address.id}) }}" class="btn btn-success">Use this address</a>
+            
+        </div>
+
+    
+    {% endfor %}
+    <a href="{{ path('app_address_index') }}" class="btn btn-primary">manage addresses</a>
+
+{% endblock %}

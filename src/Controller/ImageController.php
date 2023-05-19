@@ -21,7 +21,7 @@ class ImageController extends AbstractController
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
 
-        return $this->renderForm('image/index.html.twig', [
+        return $this->renderForm('image/address_selection.html.twig', [
             'product' => $product,
             'form' => $form
         ]);

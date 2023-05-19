@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order{% endblock %}
+
+{% block body %}
+    <h1>Order</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ order.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ order.status }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ order.total }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="border border-dark">
+        {% for item in order.orderItems %}
+
+            <p>product : {{ item.product.name }} quantity : {{ item.quantity }}</p>
+        {% endfor %}
+
+    </div>
+    <a href="{{ path('app_my_orders_index') }}">back to list</a>
+
+
+{% endblock %}
