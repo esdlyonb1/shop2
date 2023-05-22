@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ProductRepository;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -14,11 +15,33 @@ use Twig\Environment;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ProductRepository $productRepository): Response
+    #[Route('/search', name: 'app_home_search', methods: ['POST'])]
+    public function index(ProductRepository $productRepository, Request $request): Response
     {
+        // cas de recherche :
+
+        if($request->getData('_route') === 'app_home_search'){
+
+            $searchValue = $request->get('value');
+            if($searchValue == ""){
+                return $this->redirectToRoute('app_home');
+            }
+
+            $products = $productRepository->findBy([
+                'description'=>$searchValue
+            ]);
+
+
+
+        }
+
+
+
+        $products = $productRepository->findAll();
+
         return $this->render('home/index.html.twig',
         [
-            'products'=>$productRepository->findAll()
+            'products'=>$products
         ]);
     }
 
@@ -43,16 +66,16 @@ class HomeController extends AbstractController
 
 
         $email = (new Email())
-            ->from()
+            ->from('contact@imatrythis.com')
 
             //tester avec votre propre email
-            ->to('destinataire@mail.com')
+            ->to('shoppymcshop9@gmail.com')
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
+            ->subject('Le Test bla bla')
+            ->text('le test le test')
 
 
 

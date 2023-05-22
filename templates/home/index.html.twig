@@ -3,6 +3,14 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+
+    <p>barre de recherche</p>
+
+    <form action="{{ path('app_home_search') }}" method="post">
+
+        <input type="text" name="value">
+        <button type="submit" class="btn btn-success">Search</button>
+    </form>
 <div class="row">
 
 
@@ -16,11 +24,34 @@
                 <div class="card-img"><img src="{{ vich_uploader_asset(product.images.0,'imageFile')|imagine_filter('vignette') }}" alt=""></div>
 
 {% endif %}
+
+                <p><strong>Average Mark : {% if product.getAverageMark() is not null %}{{ product.getAverageMark()|number_format(1) }}{% else %}Not rated yet {% endif %}</strong></p>
+
+                    <p> p vide versus plein en fonction de la note : </p>
+
+                {% set average = product.getAverageMark() %}
+
+
+
+                {% for i in 0..5 %}
+
+                    {% if average <= i %}
+                        <a href="{{ path('app_rate',{id:product.id, mark:i}) }}"> vide</a>
+                    {% else %}
+                        <a href="{{ path('app_rate',{id:product.id, mark:i}) }}"> plein</a>
+                    {% endif %}
+
+                {% endfor %}
+
+
+
                 <p class="card-text">{{ product.description }}</p>
                 <div class="row">
                     <p><strong>Price : {{ product.price }}€</strong></p>
                     <a href="{{ path('app_cart_add', {id:product.id, quantity:1}) }}" class="btn btn-success">Add one to cart</a>
                     <a href="{{ path('app_cart_add', {id:product.id, quantity:2}) }}" class="btn btn-success">Add two to cart</a>
+
+
                 </div>
             </div>
         </div>

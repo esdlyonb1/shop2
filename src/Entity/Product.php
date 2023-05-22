@@ -35,10 +35,14 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderItem::class)]
     private Collection $orderItems;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Rate::class)]
+    private Collection $rates;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
+        $this->rates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,5 +156,55 @@ class Product
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Rate>
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rate $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates->add($rate);
+            $rate->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rate $rate): self
+    {
+        if ($this->rates->removeElement($rate)) {
+            // set the owning side to null (unless already changed)
+            if ($rate->getProduct() === $this) {
+                $rate->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAverageMark(){
+        $productRates = $this->getRates();
+        $total = 0;
+        $numberOfRates = 0;
+        foreach ($productRates as $rate){
+            $numberOfRates+=1;
+            $total+=$rate->getMark();
+        }
+
+        $response = null;
+        if($numberOfRates !== 0)
+        {
+            $response = $total/$numberOfRates;
+        }
+
+        return $response;
+
+
     }
 }
